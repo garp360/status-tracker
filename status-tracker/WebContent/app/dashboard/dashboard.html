@@ -24,7 +24,7 @@
 		<ul class="list-group">
 			<li class="list-group-item" ng-repeat="report in latestStatus | orderBy : 'product' ">
 				<span class="badge">{{report.allocation}}%</span>
-				{{report.product}} {{report.version}} as {{report.role}}
+				{{report.product}} {{report.version}}<br />as {{report.role}}
 			</li>
 		</ul>
 	</div>
