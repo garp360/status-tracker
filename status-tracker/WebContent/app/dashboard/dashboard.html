@@ -1,5 +1,5 @@
 <div>
-	<div class="form-vertical" style="padding:80px 10px 80px 10px;">
+	<form class="form-vertical" style="padding:80px 10px 80px 10px;" ng-submit="save()">
 		<div class="form-group">
 			<select ng-change="onProductChange(report.product.$id)" ng-model="report.product" class="form-control" ng-options="product.name for product in products | orderBy:'name'"></select>
 		</div>
@@ -19,8 +19,8 @@
 			</div>
 			<button type="submit" class="btn btn-primary">Add</button>
 		</div>
-	</div>
-	<div>
+	</form>
+	<div style="padding:0px 10px;">
 		<ul class="list-group">
 			<li class="list-group-item" ng-repeat="report in latestStatus | orderBy : 'product' ">
 				<span class="badge">{{report.allocation}}%</span>

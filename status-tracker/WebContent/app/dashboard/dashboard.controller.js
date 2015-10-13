@@ -18,6 +18,7 @@
 
     		$scope.onProductChange = updateReport;
     		$scope.logout = logout;    		
+    		$scope.save = save;    		
     		
     		function updateReport(prodId) {
     			var found = false;
@@ -34,5 +35,9 @@
     			AuthFactory.logout();
     			$state.go(ROUTES.AUTH.LOGOUT);
     		};
+    		
+    		function save() {
+    			StatusFactory.save()
+    		}
     	};
 })();
