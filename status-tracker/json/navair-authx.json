@@ -1,0 +1,50 @@
+{
+    "users": {
+        "sample1": {
+            "name": {
+                "first": "FIRST",
+                "last": "LAST",
+                "middle": "MIDDLE"
+            },
+            "contact": {
+                "email": [
+                    {
+                        "type": "WORK",
+                        "address": "name@work.com",
+                        "primary": false
+                    },
+                    {
+                        "type": "PERSONAL",
+                        "address": "name@personal.com",
+                        "primary": false
+                    }
+                ],
+                "phone": [
+                    {
+                        "type": "WORK",
+                        "number": "904.222.1212",
+                        "primary": false
+                    },
+                    {
+                        "type": "WORK",
+                        "number": "904.222.1212",
+                        "primary": false
+                    }
+                ]
+            },
+            "audit": {
+                "create": {
+                    "date": "1/1/2015 12:12:22",
+                    "by": "SYSYTEM"
+                },
+                "update": {
+                    "date": "1/1/2015 12:12:22",
+                    "by": "SYSYTEM",
+                    "previous": [
+                        ""
+                    ]
+                }
+            }
+        }
+    }
+}

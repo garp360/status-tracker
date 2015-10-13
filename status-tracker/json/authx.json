@@ -1,0 +1,163 @@
+{
+    "roles": {
+        "64eef568-7319-47c5-a5a6-6a6608383d6b": [
+            "ADMIN",
+            "USER",
+            "PUBLIC",
+            "CLIENT"
+        ],
+        "72314ec6-03d7-4de2-9ffc-973d00525976": [
+            "USER",
+            "PUBLIC"
+        ],
+        "ec49dd92-3568-46f5-b0b7-c8d0b87741d8": [
+            "USER",
+            "PUBLIC"
+        ]
+    },
+    "users": {
+        "ec49dd92-3568-46f5-b0b7-c8d0b87741d8": {
+            "name": {
+                "first": "Parker",
+                "last": "Garrison",
+                "middle": ""
+            },
+            "contact": {
+                "email": [
+                    {
+                        "type": "NAVY",
+                        "address": "parker.garrison.ctr@navy.mil",
+                        "primary": false
+                    },
+                    {
+                        "type": "ASTADIA",
+                        "address": "parker.garrison@astadia.com",
+                        "primary": false
+                    }
+                ],
+                "phone": [
+                    {
+                        "type": "NAVY",
+                        "number": "904.317.5446",
+                        "primary": false
+                    },
+                    {
+                        "type": "PERSONAL",
+                        "number": "904.655.9635",
+                        "primary": true
+                    }
+                ]
+            },
+            "audit": {
+                "create": {
+                    "date": "10/1/2015 12:00:00",
+                    "by": "SYSTEM"
+                },
+                "update": {
+                    "date": "10/1/2015 12:00:00",
+                    "by": "SYSTEM",
+                    "previous": [
+                        ""
+                    ]
+                }
+            }
+        },
+        "72314ec6-03d7-4de2-9ffc-973d00525976": {
+            "name": {
+                "first": "Andre",
+                "last": "Perez",
+                "middle": "O"
+            },
+            "contact": {
+                "email": [
+                    {
+                        "type": "NAVY",
+                        "address": "andre.perez.ctr@navy.mil",
+                        "primary": false
+                    },
+                    {
+                        "type": "ASTADIA",
+                        "address": "andre.perez@astadia.com",
+                        "primary": false
+                    }
+                ],
+                "phone": [
+                    {
+                        "type": "NAVY",
+                        "number": "904.317.5496",
+                        "primary": false
+                    },
+                    {
+                        "type": "PERSONAL",
+                        "number": "904.472.9274",
+                        "primary": true
+                    }
+                ]
+            },
+            "audit": {
+                "create": {
+                    "date": "10/1/2015 12:00:00",
+                    "by": "SYSTEM"
+                },
+                "update": {
+                    "date": "10/1/2015 12:00:00",
+                    "by": "SYSTEM",
+                    "previous": [
+                        ""
+                    ]
+                }
+            }
+        },
+        "64eef568-7319-47c5-a5a6-6a6608383d6b": {
+            "name": {
+                "first": "Garth",
+                "last": "Pidcock",
+                "middle": "J"
+            },
+            "contact": {
+                "email": [
+                    {
+                        "type": "NAVY",
+                        "address": "garth.pidcock.ctr@navy.mil",
+                        "primary": false
+                    },
+                    {
+                        "type": "ASTADIA",
+                        "address": "garth.pidcock@astadia.com",
+                        "primary": false
+                    },
+                    {
+                        "type": "PERSONAL",
+                        "address": "garth.pidcock@gmail.com",
+                        "primary": false
+                    }
+                ],
+                "phone": [
+                    {
+                        "type": "NAVY",
+                        "number": "904.317.5570",
+                        "primary": false
+                    },
+                    {
+                        "type": "PERSONAL",
+                        "number": "904.534.1968",
+                        "primary": true
+                    }
+                ]
+            },
+            "audit": {
+                "create": {
+                    "date": "10/1/2015 12:00:00",
+                    "by": "SYSTEM"
+                },
+                "update": {
+                    "date": "10/1/2015 12:00:00",
+                    "by": "SYSTEM",
+                    "previous": [
+                        ""
+                    ]
+                }
+            }
+        }
+    }
+}

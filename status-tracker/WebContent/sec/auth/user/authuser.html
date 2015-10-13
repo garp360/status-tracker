@@ -1,0 +1,28 @@
+<div ng-show="isAuth">{{errorMsg}}</div>
+<div ng-show="!isAuth && isUserInRole()">
+	<form class="form-horizontal" ng-submit="save()">
+		<div class="form-group">
+			<label for="name1" class="col-sm-2 control-label">First Name</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" id="name1" placeholder="First Name" ng-model="authuser.name.first">
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="name2" class="col-sm-2 control-label">Last Name</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" id="name2" placeholder="Last Name" ng-model="authuser.name.last">
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="name3" class="col-sm-2 control-label">Middle Initial</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" id="name3" placeholder="Middle Initial" ng-model="authuser.name.middle">
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-10">
+				<button type="submit" class="btn btn-default">Save</button>
+			</div>
+		</div>
+	</form>
+</div>

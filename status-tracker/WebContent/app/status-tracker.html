@@ -1,0 +1,46 @@
+<!doctype html>
+<html ng-app="astadia.status.tracker">
+<head>
+<title>Astadia - Status Tracker</title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script type='text/javascript' src="vendor/angular-js/1.4.1/angular.js"></script>
+<script type='text/javascript' src="vendor/angular-js/1.4.1/angular-animate.js"></script>
+<script type='text/javascript' src="vendor/angular-js/1.4.1/angular-aria.js"></script>
+<script type='text/javascript' src="vendor/angular-js/1.4.1/angular-messages.js"></script>
+<script type='text/javascript' src="vendor/angular-js/1.4.1/angular-sanitize.js"></script>
+<script type='text/javascript' src="vendor/angular-js/1.4.1/angular-touch.js"></script>
+<script type='text/javascript' src="vendor/angular-ui-router/2.1.4/angular-ui-router.js"></script>
+<script src="https://cdn.firebase.com/js/client/2.2.7/firebase.js"></script>
+<script src="https://cdn.firebase.com/libs/angularfire/1.1.1/angularfire.min.js"></script>
+<script type='text/javascript' src="vendor/moment/2.10.3/moment.js"></script>
+
+<!-- security -->
+<script type='text/javascript' src="sec/auth/auth.module.js"></script>
+<script type='text/javascript' src="sec/auth/auth.controller.js"></script>
+<script type='text/javascript' src="sec/auth/auth.factory.js"></script>
+
+<!-- application -->
+<script type='text/javascript' src="app/app.js"></script>
+<script type='text/javascript' src="app/app.constants.js"></script>
+<script type='text/javascript' src="app/app.route.js"></script>
+<script type='text/javascript' src="app/dashboard/dashboard.controller.js"></script>
+<script type='text/javascript' src="app/product/product.factory.js"></script>
+<script type='text/javascript' src="app/status/status.factory.js"></script>
+<script type='text/javascript' src="app/roles/role.factory.js"></script>
+
+<!-- fonts -->
+<link href="vendor/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,400italic,500,700" rel="stylesheet" type="text/css" />
+<link href='https://fonts.googleapis.com/css?family=Josefin+Sans:300,400,600,400italic,600italic,700,700italic' rel='stylesheet' type='text/css'>
+
+<!-- style -->
+<link href="vendor/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+<script type='text/javascript' src="vendor/jquery/jquery.min.2.1.1.js"></script>
+<script type='text/javascript' src="vendor/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div ui-view></div>
+</body>
+</html>

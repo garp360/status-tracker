@@ -1,0 +1,71 @@
+{
+    "employees": {
+        "64eef568-7319-47c5-a5a6-6a6608383d6b": {
+            "name": "Pidcock",
+            "status": {
+                "y2015": {
+                    "m10": [
+                        {
+                            "product": "",
+                            "version": "",
+                            "role": "",
+                            "allocation": ""
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "products": {
+        "CONOPS": {
+            "name": "CONOPS",
+            "versions": {
+                "8204": {
+                    "name": "v8.2.0.4"
+                },
+                "8202": {
+                    "name": "v8.2.0.2"
+                },
+                "8201": {
+                    "name": "v8.2.0.1_ER"
+                }
+            }
+        },
+        "MPTSTP": {
+            "name": "MPT-STP",
+            "versions": {
+                "20": {
+                    "name": "v2.0"
+                },
+                "21": {
+                    "name": "v2.1"
+                },
+                "22": {
+                    "name": "v2.2"
+                },
+                "2201": {
+                    "name": "v2.2.0.1"
+                }
+            }
+        },
+        "JSF": {
+            "name": "JSF",
+            "versions": {
+                "11": {
+                    "name": "v1.1"
+                }
+            }
+        },
+        "SOE": {
+            "name": "PSA-SOE",
+            "versions": {
+                "10": {
+                    "name": "v1.0"
+                },
+                "20": {
+                    "name": "v2.0"
+                }
+            }
+        }
+    }
+}
