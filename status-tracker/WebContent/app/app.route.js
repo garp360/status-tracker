@@ -19,26 +19,7 @@
 	    				return AuthFactory.getAuthUser();
 	    			},
 	    			status : function(authUser, StatusFactory) {
-	    				return StatusFactory.status(authUser.$id, "2015");
-	    			},
-	    			latestStatus : function(status){
-	    				var latestStatus = null;
-	    				var month = parseInt(moment().format('M'));
-	    				var yStatus = status[0];
-	    				for(var i = month; i>=0; i--) {
-	    					var reportId = "m" + i;
-		    				if(latestStatus == null) {
-								for ( var property in yStatus) {
-									if (yStatus.hasOwnProperty(property) && property === reportId) {
-										latestStatus = yStatus[property];
-										break;
-									}
-								}
-	    					} else {
-	    						break;
-	    					}
-	    				}
-	    				return latestStatus;
+	    				return StatusFactory.status(authUser.$id);
 	    			},
 	    			products : function(ProductFactory) {
 	    				return ProductFactory.all();

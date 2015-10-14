@@ -1,71 +1,87 @@
 {
     "employees": {
         "64eef568-7319-47c5-a5a6-6a6608383d6b": {
-            "name": "Pidcock",
-            "status": {
-                "y2015": {
-                    "m10": [
-                        {
-                            "product": "",
-                            "version": "",
-                            "role": "",
-                            "allocation": ""
-                        }
-                    ]
-                }
-            }
+            "name": "Pidcock"
         }
     },
     "products": {
         "CONOPS": {
             "name": "CONOPS",
-            "versions": {
-                "8204": {
-                    "name": "v8.2.0.4"
+            "versions": [
+                {
+                    "name": "v8.2.0.4",
+                    "product": "CONOPS"
                 },
-                "8202": {
-                    "name": "v8.2.0.2"
+                {
+                    "name": "v8.2.0.2",
+                    "product": "CONOPS"
                 },
-                "8201": {
-                    "name": "v8.2.0.1_ER"
+                {
+                    "name": "v8.2.0.1_ER",
+                    "product": "CONOPS"
                 }
-            }
+            ]
         },
         "MPTSTP": {
             "name": "MPT-STP",
-            "versions": {
-                "20": {
-                    "name": "v2.0"
+            "versions": [
+                {
+                    "name": "v2.0",
+                    "product": "MPTSTP"
                 },
-                "21": {
-                    "name": "v2.1"
+                {
+                    "name": "v2.1",
+                    "product": "MPTSTP"
                 },
-                "22": {
-                    "name": "v2.2"
+                {
+                    "name": "v2.2",
+                    "product": "MPTSTP"
                 },
-                "2201": {
-                    "name": "v2.2.0.1"
+                {
+                    "name": "v2.2.0.1",
+                    "product": "MPTSTP"
                 }
-            }
+            ]
         },
         "JSF": {
             "name": "JSF",
-            "versions": {
-                "11": {
-                    "name": "v1.1"
+            "versions": [
+                {
+                    "name": "v1.1",
+                    "product": "JSF"
                 }
-            }
+            ]
         },
         "SOE": {
             "name": "PSA-SOE",
-            "versions": {
-                "10": {
-                    "name": "v1.0"
+            "versions": [
+                {
+                    "name": "v1.0",
+                    "product": "SOE"
                 },
-                "20": {
-                    "name": "v2.0"
+                {
+                    "name": "v2.0",
+                    "product": "SOE"
                 }
-            }
+            ]
         }
+    },
+    "roles" : {
+    	"DEV" : {
+    		"name" : "Developer",
+    		"order" : "2"
+  		}, 	
+    	"BA" : {
+    		"name" : "Business Analyst",
+    		"order" : "2"
+  		}, 
+    	"PO" : {
+    		"name" : "Product Owner",
+    		"order" : "3"
+  		}, 
+  		"TST" : {
+    		"name" : "Tester",
+    		"order" : "4"
+  		}
     }
 }
