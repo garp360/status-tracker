@@ -1,0 +1,49 @@
+body {
+	font-family: Roboto;
+	font-size: 9pt;
+	line-height: 1.20;
+}
+
+.navbar {
+	min-height: 30px;
+}
+
+.navbar .btn {
+	font-weight: normal;
+	font-size: .95em;
+}
+
+.navbar .center-block {
+	font-weight: bold;
+	font-size: 1em;
+	text-align: center;
+	padding: 3px 0px;
+}
+
+.form-group {
+	margin-bottom:1px;
+}
+
+.list-group-item {
+	padding: 6px 8px;
+}
+
+label {
+	margin-bottom: 0px;
+}
+
+li .badge {
+	margin-top: -2px;
+}
+
+li .checkbox {
+	margin: 0px 5px;
+}
+
+li .checkbox label {
+	min-height: 0px;
+}
+
+li input[type="checkbox"] {
+	margin: 0px 0px 0px;
+}

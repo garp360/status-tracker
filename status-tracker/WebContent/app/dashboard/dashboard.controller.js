@@ -9,7 +9,9 @@
     	
     	function DashboardController ($scope, $log, $state, $controller, AuthFactory, ProductFactory, StatusFactory, ROUTES, authUser, status, products, roles, report) 
     	{
-    		$scope.errorMsg = null;
+    		$scope.errorMsg = false;
+    		$scope.isEdit = false;
+    		$scope.errorMessage = "";
     		$scope.authUser = authUser;
     		$scope.status = status;
     		$scope.products = products;
@@ -21,6 +23,7 @@
     		$scope.clearErrorMsg = clearErrorMsg;
     		$scope.logout = logout;    		
     		$scope.save = save;    		
+    		$scope.edit = edit;    		
     		
     		function updateReport(prodId) {
     			var found = false;
@@ -33,9 +36,13 @@
     			});
     		};
     		
+    		function edit() {
+    			$scope.isEdit = !$scope.isEdit;
+    		};
+    		
     		function clearErrorMsg() {
-    			$scope.errorMsg = null;
-    		}
+    			$scope.errorMsg = false;
+    		};
     		
     		function logout() {
     			AuthFactory.logout();
@@ -58,7 +65,8 @@
     				$scope.status = status; 
     				$scope.latestStatus = getLatestStatus();
     			}, function(error) {
-    				$scope.errorMsg = error;
+    				$scope.errorMsg = true;
+    				$scope.errorMessage = error;
     			});
     		}
     		

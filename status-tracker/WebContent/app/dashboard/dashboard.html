@@ -1,54 +1,55 @@
-<div style="padding:60px 10px 70px 10px;">
-	<form class="form-vertical" style="margin-bottom:45px;"  ng-submit="save()">
+<div style="padding:40px 10px 40px 10px;">
+	<form class="form-vertical"  ng-submit="save()">
 		<div class="form-group">
-			<select ng-change="onProductChange(report.product.$id)" ng-model="report.product" class="form-control input-sm" ng-options="product.name for product in products | orderBy:'name'"></select>
+			<label for="product" class="control-label">Product</label>
+			<select id="product" ng-change="onProductChange(report.product.$id)" ng-model="report.product" class="form-control input-sm" ng-options="product.name for product in products | orderBy:'name'"></select>
 		</div>
 		<div class="form-group">
-			<select ng-model="report.version" class="form-control input-sm" ng-options="version.name for version in report.product.versions | orderBy:'name'"></select>
+			<label for="version" class="control-label">Version</label>
+			<select id="version" ng-model="report.version" class="form-control input-sm" ng-options="version.name for version in report.product.versions | orderBy:'name'"></select>
 		</div>
 		<div class="form-group">
-			<select ng-model="report.role" class="form-control input-sm" ng-options="role.name for role in roles | orderBy:'order'"></select>
+			<label for="role" class="control-label">Role</label>
+			<select id="role" ng-model="report.role" class="form-control input-sm" ng-options="role.name for role in roles | orderBy:'order'"></select>
 		</div>
-		<div class="form-inline">
-			<div class="form-group col-xs-8" style="padding-left:0px;">
-				<label class="sr-only" for="allocation">allocation</label>
-				<div class="input-group pull-left">
-					<input ng-model="report.allocation" type="number" class="form-control input-sm" id="allocation" placeholder="Allocation">
-					<div class="input-group-addon">%</div>
-				</div>
-			</div>
-			<div class="form-group col-xs-4">
-				<button type="submit" class="btn btn-primary btn-sm pull-right">Add</button>
-			</div>
+		<div class="form-group">
+			<label for="allocation" class="control-label">Allocation</label>
+			<input ng-model="report.allocation" type="number" class="form-control input-sm" id="allocation" placeholder="Allocation">
+		</div>
+		<div class="form-group center-block" style="padding-top:2px;text-align:center;">
+			<button type="submit" class="btn btn-primary btn-xs">Add</button>
 		</div>
 	</form>
 	<div style="padding-top:10px;">
-		<div ng-show="errorMsg" class="alert alert-warning alert-dismissible" role="alert">
-			<button type="button" class="close" data-dismiss="alert" aria-label="Close" ng-click="clearErrorMsg()"><span aria-hidden="true">&times;</span></button>
-			<strong>Warning!</strong> {{errorMsg}}
-		</div>
 		<ul class="list-group">
-			<li class="list-group-item entry" ng-repeat="report in latestStatus | orderBy : '!allocation' ">
+			<li class="list-group-item" ng-repeat="report in latestStatus | orderBy : '!allocation' ">
 				<span class="badge">{{report.allocation}}%</span>
-				{{report.product}} {{report.version}} ({{report.role}})
+				<div ng-show="isEdit" class="checkbox">
+			    	<label>
+			      		<input type="checkbox"> {{report.product}} {{report.version}} ({{report.role}})
+			    	</label>
+			  	</div>
+				<span ng-show="!isEdit">{{report.product}} {{report.version}} ({{report.role}})</span>
 			</li>
 		</ul>
 	</div>
 </div>
 
-<nav class="navbar navbar-default hdr navbar-fixed-top">
-	<div class="container-fluid" style="margin-top:10px;">
-		<span class="pull-left">{{authUser.name.first}} {{authUser.name.last}}</span>
-		<span class="pull-right">October 2015</span>
-	</div>
+<nav class="navbar navbar-default navbar-fixed-top">
+	<button type="button" class="btn btn-link pull-left" ng-click="logout()">&lt; logout</button>
+	<button ng-show="!isEdit" type="button" class="btn btn-link pull-right" ng-click="edit()">edit</button>
+	<button ng-show="isEdit" type="button" class="btn btn-link pull-right" ng-click="edit()">cancel</button>
+	<div class="center-block">Garth Pidcock<br />Status</div>
+	
+	
 </nav>
-<nav class="navbar navbar-default ftr navbar-fixed-bottom">
-	<div class="container-fluid">
-		<button type="button" class="btn btn-default navbar-btn pull-left" ng-click="logout()">Carryover</button>
-		<button type="button" class="btn btn-default navbar-btn pull-right" ng-click="logout()">Logout</button>
- 	</div>
+<nav class="navbar navbar-default navbar-fixed-bottom">
+	<button type="button" class="btn btn-link pull-right"><i class="fa fa-plus"></i></button>
 </nav>
-
+<div ng-show="errorMsg" class="alert alert-warning alert-dismissible" role="alert" style="position:fixed;top:25px;right:10px;left:10px;z-index:100000;">
+	<button type="button" class="close" aria-label="Close" ng-click="clearErrorMsg()"><span aria-hidden="true">&times;</span></button>
+	<strong>Warning!</strong> {{errorMessage}}
+</div>
 
 <!-- <div style="padding:60px 10px 80px 10px;"> -->
 <!-- 	<form class="form-vertical" ng-submit="save()"> -->
