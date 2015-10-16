@@ -1,20 +1,20 @@
 <div style="padding:40px 10px 40px 10px;">
-	<form class="form-vertical"  ng-submit="save()">
+	<form class="form-vertical"  ng-submit="addEntry()">
 		<div class="form-group">
 			<label for="product" class="control-label">Product</label>
-			<select ng-disabled="isEdit" id="product" ng-change="onProductChange(report.product.$id)" ng-model="report.product" class="form-control input-sm" ng-options="product.name for product in products | orderBy:'name'"></select>
+			<select ng-disabled="isEdit" id="product" ng-change="onProductChange(reportForm.product.$id)" ng-model="reportForm.product" class="form-control input-sm" ng-options="product.name for product in products | orderBy:'name'"></select>
 		</div>
 		<div class="form-group">
 			<label for="version" class="control-label">Version</label>
-			<select ng-disabled="isEdit" id="version" ng-model="report.version" class="form-control input-sm" ng-options="version.name for version in report.product.versions | orderBy:'name'"></select>
+			<select ng-disabled="isEdit" id="version" ng-model="reportForm.version" class="form-control input-sm" ng-options="version.name for version in reportForm.product.versions | orderBy:'name'"></select>
 		</div>
 		<div class="form-group">
 			<label for="role" class="control-label">Role</label>
-			<select ng-disabled="isEdit" id="role" ng-model="report.role" class="form-control input-sm" ng-options="role.name for role in roles | orderBy:'order'"></select>
+			<select ng-disabled="isEdit" id="role" ng-model="reportForm.role" class="form-control input-sm" ng-options="role.name for role in roles | orderBy:'order'"></select>
 		</div>
 		<div class="form-group">
 			<label for="allocation" class="control-label">Allocation</label>
-			<input ng-disabled="isEdit" ng-model="report.allocation" type="number" class="form-control input-sm" id="allocation" placeholder="Allocation">
+			<input ng-disabled="isEdit" ng-model="reportForm.allocation" type="number" class="form-control input-sm" id="allocation" placeholder="Allocation">
 		</div>
 		<div class="form-group center-block" style="padding-top:2px;text-align:center;">
 			<button ng-disabled="isEdit" type="submit" class="btn btn-primary btn-xs">Add</button>
@@ -22,14 +22,14 @@
 	</form>
 	<div style="padding-top:10px;">
 		<ul class="list-group">
-			<li class="list-group-item" ng-repeat="report in latestStatus | orderBy : '!allocation' ">
-				<span class="badge">{{report.entry.allocation}}%</span>
+			<li class="list-group-item" ng-repeat="monitor in report | orderBy : '!allocation' ">
+				<span class="badge">{{monitor.entry.allocation}}%</span>
 				<div ng-show="isEdit" class="checkbox">
 			    	<label>
-			      		<input type="checkbox" ng-model="report.selected"> {{report.entry.product}} {{report.entry.version}} ({{report.entry.role}})
+			      		<input type="checkbox" ng-model="monitor.selected"> {{monitor.entry.product}} {{monitor.entry.version}} ({{monitor.entry.role}})
 			    	</label>
 			  	</div>
-				<span ng-show="!isEdit">{{report.entry.product}} {{report.entry.version}} ({{report.entry.role}})</span>
+				<span ng-show="!isEdit">{{monitor.entry.product}} {{monitor.entry.version}} ({{monitor.entry.role}})</span>
 			</li>
 		</ul>
 	</div>

@@ -19,10 +19,10 @@
 	    				return AuthFactory.getAuthUser();
 	    			},
 	    			reportId : function() {
-	    				return moment().format('MMMYYYY').toUpperCase();
+	    				return moment().utc().format('MMMYYYY').toUpperCase();
 	    			},
-	    			status : function(authUser, StatusFactory) {
-	    				return StatusFactory.status(authUser.$id);
+	    			report : function(authUser, reportId, StatusFactory) {
+	    				return StatusFactory.getReport(authUser.$id, reportId);
 	    			},
 	    			products : function(ProductFactory) {
 	    				return ProductFactory.all();
@@ -30,7 +30,7 @@
 	    			roles : function(RoleFactory) {
 	    				return RoleFactory.all();
 	    			},
-	    			report : function(products, roles) {
+	    			reportForm : function(products, roles) {
     					return {
     						product: products[0],
 	    					version: products[0].versions[0],

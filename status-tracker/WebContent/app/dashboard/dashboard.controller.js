@@ -5,7 +5,7 @@
     	.module('astadia.status.tracker')
     	.controller('DashboardController', DashboardController);
     	
-    	DashboardController.$inject = ['$scope', '$log', '$state', '$controller', 'AuthFactory', 'ProductFactory', 'StatusFactory', 'ROUTES', 'authUser', 'status', 'products', 'roles', 'report'];
+    	DashboardController.$inject = ['$scope', '$log', '$state', '$controller', 'AuthFactory', 'ProductFactory', 'StatusFactory', 'ROUTES', 'authUser', 'report', 'products', 'roles', 'reportForm'];
     	
     	function DashboardController ($scope, $log, $state, $controller, AuthFactory, ProductFactory, StatusFactory, ROUTES, authUser, status, products, roles, report) 
     	{
@@ -16,15 +16,15 @@
     		$scope.status = status;
     		$scope.products = products;
     		$scope.roles = roles;
-    		$scope.report = report; 
-    		$scope.latestStatus = getLatestStatus(); 
+    		$scope.reportForm = reportForm; 
+    		$scope.report = getMonitorableReport(report); 
     		$scope.toDelete = [];
-    		$scope.reportDate = moment().format('MMMM YYYY');
+    		$scope.reportDate = report.$id;
 
     		$scope.onProductChange = onProductChangeEventHandler;
     		$scope.clearErrorMsg = clearErrorMsg;
     		$scope.logout = logout;    		
-    		$scope.save = save;    		
+    		$scope.addEntry = addEntry;    		
     		$scope.edit = edit;    		
     		$scope.remove = remove;    		
     		$scope.selectAll = selectAll;
@@ -35,13 +35,14 @@
     			angular.forEach($scope.products, function(product) {
     				if(!found && product.$id === prodId) {
     					found = true;
-    					$scope.report.product = product;
-    		    		$scope.report.version = product.versions[0];
+    					$scope.reportForm.product = product;
+    		    		$scope.reportForm.version = product.versions[0];
     				}
     			});
     		};
     		
-    		function edit() {
+    		function edit() 
+    		{
     			$scope.isEdit = !$scope.isEdit;
     		};
     		
@@ -57,7 +58,8 @@
     			StatusFactory.saveAll($scope.authUser.$id, $scope.latestStatus.$id, report);
     		};
 
-    		function selectAll() {
+    		function selectAll() 
+    		{
     			
     		};
 
@@ -65,57 +67,45 @@
     			$scope.errorMsg = false;
     		};
     		
-    		function logout() {
+    		function logout() 
+    		{
     			AuthFactory.logout();
     			$state.go(ROUTES.AUTH.LOGOUT);
     		};
     		
-    		function save() 
+    		function addEntry() 
     		{
-    			var reportId = moment().format('MMMYYYY');
-    			
-    			if($scope.latestStatus && $scope.latestStatus.$id) 
-    			{
-    				reportId = $scope.latestStatus.$id;
-    			}
-    			
-    			if(!$scope.report.version) 
-    			{
-    				$scope.report.version = $scope.report.product.versions[0];
-    			}
-    			
-    			StatusFactory.save($scope.authUser.$id, reportId, $scope.report).then(function(status){
+    			StatusFactory.saveReport($scope.authUser.$id, $scope.report).then(function(status){
     				$scope.status = status; 
     				$scope.latestStatus = getLatestStatus();
     			}, function(error) {
     				$scope.errorMsg = true;
     				$scope.errorMessage = error;
     			});
+    		};
+    		
+    		function statusAlreadyExists(report, reportEntry) {
+    			var exists = false;
+    			angular.forEach(report, function(entry){
+    				if(!exists && 	
+    					entry.product == reportEntry.product &&
+    					entry.version == reportEntry.version &&
+    					entry.role == reportEntry.role)
+    				{
+    					exists = true;
+    				}
+    					
+    			});
+    			return exists;
     		}
     		
-    		function getLatestStatus() 
+    		function getMonitorableReport(report) 
     		{
-				var latestReport = null;
 				var modReport = [];
 				
-				angular.forEach($scope.status, function(report)
+				if(report)
 				{
-					if(latestReport == null)
-					{
-						latestReport = report;
-					}
-					else
-					{
-						if(moment(report.date).utc().isAfter(moment(latestReport.date).utc()))
-						{
-							latestReport = report;
-						}
-					}
-				});
-				
-				if(latestReport)
-				{
-					angular.forEach(latestReport, function(reportEntry)
+					angular.forEach(report, function(reportEntry)
 					{
 						modReport.push({
 								selected: false,

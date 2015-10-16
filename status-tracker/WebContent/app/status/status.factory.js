@@ -12,90 +12,27 @@
     		var factory = {};
     		var statusRef = new Firebase("https://astadia-status.firebaseio.com/employees");
     		
-    		factory.status = getStatus;
-    		factory.save = save;
-    		
-    		function getStatus(empId) 
-    		{
-    			var ref = statusRef.child(empId).child("status");
-    			return $firebaseArray(ref).$loaded();
-    		}
-    		
-    		function saveAll(empId, reportId, entryArray) 
+    		factory.getReport = getReport;
+    		factory.saveReport = saveReport;
+
+    		function getCurrentReport(empId) 
     		{
     			var deferred = $q.defer();
-    			getReport(empId, reportId).then(function(report){
-    				var entries = [];
-    				angular.forEach(entryArray, function(entry){
-    					entries.push(transformReportEntry(entry));
-    				});
-    				report = entries;
-    				return report.$save();
-    			}).then(function(report) {
+    			
+    			var ref = statusRef.child(empId).child("reports").child(reportId);
+    			$firebaseArray(ref).$loaded().then(function(report) {
     				deferred.resolve(report);
+    			}, function(error){
+    				deferred.reject("REPORT:: " + error);
     			});
-    			
     			return deferred.promise;
     		}
     		
-    		
-    		function save(empId, reportId, entry) 
+    		function saveReport(empId, report)
     		{
-    			var deferred = $q.defer();
-    			var reportEntry = transformReportEntry(entry);
     			
-    			getEmployee(empId).then(function(employee) {
-    				if(!employee.status) 
-    				{
-    					employee.status = {};
-    					employee.status[reportId] = [];
-    				} 
-    				else if (!employee.status[reportId]) 
-    				{
-    					employee.status[reportId] = [];
-    				}
-    				
-    				if(!statusAlreadyExists(employee.status[reportId], reportEntry)) {
-    					employee.status[reportId].push(reportEntry);    					
-    				} else {
-    					deferred.reject("Entry already exists");
-    				}
-    				
-    				return employee.$save();
-    			}).then(function(employee){
-    				return getStatus(empId);
-    			}).then(function(status){
-    				deferred.resolve(status);
-    			});
-		
-    			return deferred.promise;
-    		}
-    		
-    		function statusAlreadyExists(report, reportEntry) {
-    			var exists = false;
-    			angular.forEach(report, function(entry){
-    				if(!exists && 	
-    					entry.product == reportEntry.product &&
-    					entry.version == reportEntry.version &&
-    					entry.role == reportEntry.role)
-    				{
-    					exists = true;
-    				}
-    					
-    			});
-    			return exists;
-    		}
-    		
-    		function getEmployee(empId) {
-    			var ref = statusRef.child(empId);
-    			return $firebaseObject(ref).$loaded();
     		}
 
-    		function getReport(empId, reportId) {
-    			var ref = statusRef.child(empId).child('status').child(reportId);
-    			return $firebaseObject(ref).$loaded();
-    		}
-    		
     		function transformReportEntry(reportEntry){
     			return {
     				product: reportEntry.product.name,
