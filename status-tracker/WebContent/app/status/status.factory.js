@@ -21,6 +21,24 @@
     			return $firebaseArray(ref).$loaded();
     		}
     		
+    		function saveAll(empId, reportId, entryArray) 
+    		{
+    			var deferred = $q.defer();
+    			getReport(empId, reportId).then(function(report){
+    				var entries = [];
+    				angular.forEach(entryArray, function(entry){
+    					entries.push(transformReportEntry(entry));
+    				});
+    				report = entries;
+    				return report.$save();
+    			}).then(function(report) {
+    				deferred.resolve(report);
+    			});
+    			
+    			return deferred.promise;
+    		}
+    		
+    		
     		function save(empId, reportId, entry) 
     		{
     			var deferred = $q.defer();
@@ -70,6 +88,11 @@
     		
     		function getEmployee(empId) {
     			var ref = statusRef.child(empId);
+    			return $firebaseObject(ref).$loaded();
+    		}
+
+    		function getReport(empId, reportId) {
+    			var ref = statusRef.child(empId).child('status').child(reportId);
     			return $firebaseObject(ref).$loaded();
     		}
     		

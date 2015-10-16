@@ -4,6 +4,10 @@ body {
 	line-height: 1.20;
 }
 
+.btn.btn-link.no-pad {
+	padding:0px;
+}
+
 .navbar {
 	min-height: 30px;
 }
@@ -12,6 +16,7 @@ body {
 	font-weight: normal;
 	font-size: .95em;
 }
+
 
 .navbar .center-block {
 	font-weight: bold;

@@ -19,17 +19,18 @@
     		$scope.report = report; 
     		$scope.latestStatus = getLatestStatus(); 
     		$scope.toDelete = [];
+    		$scope.reportDate = moment().format('MMMM YYYY');
 
-    		$scope.onProductChange = updateReport;
+    		$scope.onProductChange = onProductChangeEventHandler;
     		$scope.clearErrorMsg = clearErrorMsg;
     		$scope.logout = logout;    		
     		$scope.save = save;    		
     		$scope.edit = edit;    		
     		$scope.remove = remove;    		
-    		$scope.selectAll = selectAll; 
-    		$scope.toggleSelected = toggleSelected;
+    		$scope.selectAll = selectAll;
     		
-    		function updateReport(prodId) {
+    		function onProductChangeEventHandler(prodId) 
+    		{
     			var found = false;
     			angular.forEach($scope.products, function(product) {
     				if(!found && product.$id === prodId) {
@@ -44,14 +45,22 @@
     			$scope.isEdit = !$scope.isEdit;
     		};
     		
-    		function remove() {
-    			$scope.isEdit = !$scope.isEdit;
+    		function remove() 
+    		{
+    			var report = [];
+    			angular.forEach($scope.latestStatus, function(reportEntry)
+    			{
+    				if(!reportEntry.selected) {
+    					report.push(reportEntry.entry);
+    				}
+    			});
+    			StatusFactory.saveAll($scope.authUser.$id, $scope.latestStatus.$id, report);
     		};
 
     		function selectAll() {
-    			$scope.isEdit = !$scope.isEdit;
+    			
     		};
-    		
+
     		function clearErrorMsg() {
     			$scope.errorMsg = false;
     		};
@@ -61,7 +70,8 @@
     			$state.go(ROUTES.AUTH.LOGOUT);
     		};
     		
-    		function save() {
+    		function save() 
+    		{
     			var reportId = moment().format('MMMYYYY');
     			
     			if($scope.latestStatus && $scope.latestStatus.$id) 
@@ -69,7 +79,8 @@
     				reportId = $scope.latestStatus.$id;
     			}
     			
-    			if(!$scope.report.version) {
+    			if(!$scope.report.version) 
+    			{
     				$scope.report.version = $scope.report.product.versions[0];
     			}
     			
@@ -82,8 +93,10 @@
     			});
     		}
     		
-    		function getLatestStatus() {
+    		function getLatestStatus() 
+    		{
 				var latestReport = null;
+				var modReport = [];
 				
 				angular.forEach($scope.status, function(report)
 				{
@@ -99,8 +112,20 @@
 						}
 					}
 				});
+				
+				if(latestReport)
+				{
+					angular.forEach(latestReport, function(reportEntry)
+					{
+						modReport.push({
+								selected: false,
+								entry : reportEntry
+							}
+						);
+					});
+				}
 	
-				return latestReport;
+				return modReport;
     		}
     	};
 })();
