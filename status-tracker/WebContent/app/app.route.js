@@ -18,6 +18,9 @@
 	    			authUser : function(AuthFactory) {
 	    				return AuthFactory.getAuthUser();
 	    			},
+	    			reportId : function() {
+	    				return moment().format('MMMYYYY').toUpperCase();
+	    			},
 	    			status : function(authUser, StatusFactory) {
 	    				return StatusFactory.status(authUser.$id);
 	    			},
