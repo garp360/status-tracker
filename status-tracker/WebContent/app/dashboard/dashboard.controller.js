@@ -18,12 +18,16 @@
     		$scope.roles = roles;
     		$scope.report = report; 
     		$scope.latestStatus = getLatestStatus(); 
+    		$scope.toDelete = [];
 
     		$scope.onProductChange = updateReport;
     		$scope.clearErrorMsg = clearErrorMsg;
     		$scope.logout = logout;    		
     		$scope.save = save;    		
     		$scope.edit = edit;    		
+    		$scope.remove = remove;    		
+    		$scope.selectAll = selectAll; 
+    		$scope.toggleSelected = toggleSelected;
     		
     		function updateReport(prodId) {
     			var found = false;
@@ -37,6 +41,14 @@
     		};
     		
     		function edit() {
+    			$scope.isEdit = !$scope.isEdit;
+    		};
+    		
+    		function remove() {
+    			$scope.isEdit = !$scope.isEdit;
+    		};
+
+    		function selectAll() {
     			$scope.isEdit = !$scope.isEdit;
     		};
     		

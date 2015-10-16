@@ -2,22 +2,22 @@
 	<form class="form-vertical"  ng-submit="save()">
 		<div class="form-group">
 			<label for="product" class="control-label">Product</label>
-			<select id="product" ng-change="onProductChange(report.product.$id)" ng-model="report.product" class="form-control input-sm" ng-options="product.name for product in products | orderBy:'name'"></select>
+			<select ng-disabled="isEdit" id="product" ng-change="onProductChange(report.product.$id)" ng-model="report.product" class="form-control input-sm" ng-options="product.name for product in products | orderBy:'name'"></select>
 		</div>
 		<div class="form-group">
 			<label for="version" class="control-label">Version</label>
-			<select id="version" ng-model="report.version" class="form-control input-sm" ng-options="version.name for version in report.product.versions | orderBy:'name'"></select>
+			<select ng-disabled="isEdit" id="version" ng-model="report.version" class="form-control input-sm" ng-options="version.name for version in report.product.versions | orderBy:'name'"></select>
 		</div>
 		<div class="form-group">
 			<label for="role" class="control-label">Role</label>
-			<select id="role" ng-model="report.role" class="form-control input-sm" ng-options="role.name for role in roles | orderBy:'order'"></select>
+			<select ng-disabled="isEdit" id="role" ng-model="report.role" class="form-control input-sm" ng-options="role.name for role in roles | orderBy:'order'"></select>
 		</div>
 		<div class="form-group">
 			<label for="allocation" class="control-label">Allocation</label>
-			<input ng-model="report.allocation" type="number" class="form-control input-sm" id="allocation" placeholder="Allocation">
+			<input ng-disabled="isEdit" ng-model="report.allocation" type="number" class="form-control input-sm" id="allocation" placeholder="Allocation">
 		</div>
 		<div class="form-group center-block" style="padding-top:2px;text-align:center;">
-			<button type="submit" class="btn btn-primary btn-xs">Add</button>
+			<button ng-disabled="isEdit" type="submit" class="btn btn-primary btn-xs">Add</button>
 		</div>
 	</form>
 	<div style="padding-top:10px;">
@@ -26,7 +26,7 @@
 				<span class="badge">{{report.allocation}}%</span>
 				<div ng-show="isEdit" class="checkbox">
 			    	<label>
-			      		<input type="checkbox"> {{report.product}} {{report.version}} ({{report.role}})
+			      		<input type="checkbox" ng-click="toggleSelected(report)"> {{report.product}} {{report.version}} ({{report.role}})
 			    	</label>
 			  	</div>
 				<span ng-show="!isEdit">{{report.product}} {{report.version}} ({{report.role}})</span>
@@ -36,15 +36,28 @@
 </div>
 
 <nav class="navbar navbar-default navbar-fixed-top">
-	<button type="button" class="btn btn-link pull-left" ng-click="logout()">&lt; logout</button>
-	<button ng-show="!isEdit" type="button" class="btn btn-link pull-right" ng-click="edit()">edit</button>
-	<button ng-show="isEdit" type="button" class="btn btn-link pull-right" ng-click="edit()">cancel</button>
-	<div class="center-block">Garth Pidcock<br />Status</div>
-	
-	
+	<table style="width:100%;table-layout:fixed;margin-bottom:5px;">
+		<td style="width:80px;text-align: left;"><button type="button" class="btn btn-link pull-left" ng-click="logout()">&lt; logout</button><td>
+		<th style="width:100%;text-align: center;">Garth Pidcock<br />Status</th>
+		<td style="width:80px;text-align: right;">
+			<button ng-show="!isEdit" type="button" class="btn btn-link pull-right" ng-click="edit()">edit</button>
+			<button ng-show="isEdit" type="button" class="btn btn-link pull-right" ng-click="edit()">cancel</button>
+		</td>
+	</table>
 </nav>
 <nav class="navbar navbar-default navbar-fixed-bottom">
-	<button type="button" class="btn btn-link pull-right"><i class="fa fa-plus"></i></button>
+	<table style="width:100%;table-layout:fixed;margin-top:5px;">
+		<td style="width:80px;text-align: left;">
+			<button ng-show="isEdit" type="button" class="btn btn-link pull-left" ng-click="selectAll()">select all</button>
+		<td>
+		<th style="width:100%;text-align: center;">{{latestStatus.length}}</th>
+		<td style="width:80px;text-align: right;">
+			<button ng-show="!isEdit" type="button" class="btn btn-link pull-right"><i class="fa fa-plus fa-lg"></i></button>
+			<button ng-show="isEdit" type="button" class="btn btn-link pull-right"><i class="fa fa-trash-o fa-lg"></i></button>
+		</td>
+	</table>
+
+	
 </nav>
 <div ng-show="errorMsg" class="alert alert-warning alert-dismissible" role="alert" style="position:fixed;top:25px;right:10px;left:10px;z-index:100000;">
 	<button type="button" class="close" aria-label="Close" ng-click="clearErrorMsg()"><span aria-hidden="true">&times;</span></button>
