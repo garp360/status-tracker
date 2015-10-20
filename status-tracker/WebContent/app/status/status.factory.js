@@ -15,30 +15,48 @@
     		factory.getReport = getReport;
     		factory.saveReport = saveReport;
 
-    		function getCurrentReport(empId) 
+    		function getReport(empId, reportId) 
     		{
+    			$log.debug("StatusFactory.getReport( " + " empId=[" + empId + " ], reportId=[ " + reportId + " ]");
     			var deferred = $q.defer();
     			
     			var ref = statusRef.child(empId).child("reports").child(reportId);
-    			$firebaseArray(ref).$loaded().then(function(report) {
-    				deferred.resolve(report);
+    			$firebaseObject(ref).$loaded().then(function(report) {
+					report.lastModified = moment().utc().valueOf();
+					report.employeeId = empId;
+					if(!report.items) 
+					{
+						report.items = [];
+					}
+    				return report.$save();
     			}, function(error){
     				deferred.reject("REPORT:: " + error);
+    			}).then(function(report){
+    				deferred.resolve($firebaseObject(ref).$loaded());
     			});
     			return deferred.promise;
     		}
     		
-    		function saveReport(empId, report)
+    		function saveReport(empId, reportId, item)
     		{
-    			
+    			var deferred = $q.defer();
+    			$firebaseObject(statusRef.child(empId).child("reports").child(reportId)).$loaded().then(function(report) {
+    				if(!report.items) 
+    				{
+    					report.items = [];
+    				}
+    				report.items.push(transformReportItem(item));
+    				deferred.resolve(report.$save());
+    			});
+    			return deferred.promise;
     		}
 
-    		function transformReportEntry(reportEntry){
+    		function transformReportItem(item){
     			return {
-    				product: reportEntry.product.name,
-    				version: reportEntry.version.name,
-    				role: reportEntry.role.name,
-    				allocation: reportEntry.allocation
+    				product: item.product.name,
+    				version: item.version.name,
+    				role: item.role.name,
+    				allocation: item.allocation
     			}
     		}
     		

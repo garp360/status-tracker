@@ -5,19 +5,18 @@
     	.module('astadia.status.tracker')
     	.controller('DashboardController', DashboardController);
     	
-    	DashboardController.$inject = ['$scope', '$log', '$state', '$controller', 'AuthFactory', 'ProductFactory', 'StatusFactory', 'ROUTES', 'authUser', 'report', 'products', 'roles', 'reportForm'];
+    	DashboardController.$inject = ['$scope', '$log', '$state', '$controller', 'AuthFactory', 'ProductFactory', 'StatusFactory', 'ROUTES', 'authUser', 'report', 'products', 'roles', 'reportForm', 'monitoredReport'];
     	
-    	function DashboardController ($scope, $log, $state, $controller, AuthFactory, ProductFactory, StatusFactory, ROUTES, authUser, status, products, roles, report) 
+    	function DashboardController ($scope, $log, $state, $controller, AuthFactory, ProductFactory, StatusFactory, ROUTES, authUser, report, products, roles, reportForm, monitoredReport) 
     	{
     		$scope.errorMsg = false;
     		$scope.isEdit = false;
     		$scope.errorMessage = "";
     		$scope.authUser = authUser;
-    		$scope.status = status;
     		$scope.products = products;
     		$scope.roles = roles;
     		$scope.reportForm = reportForm; 
-    		$scope.report = getMonitorableReport(report); 
+    		$scope.report = monitoredReport; 
     		$scope.toDelete = [];
     		$scope.reportDate = report.$id;
 
@@ -75,9 +74,8 @@
     		
     		function addEntry() 
     		{
-    			StatusFactory.saveReport($scope.authUser.$id, $scope.report).then(function(status){
-    				$scope.status = status; 
-    				$scope.latestStatus = getLatestStatus();
+    			StatusFactory.saveReport($scope.authUser.$id, report.$id, reportForm).then(function(report){
+    				$scope.report = report;
     			}, function(error) {
     				$scope.errorMsg = true;
     				$scope.errorMessage = error;
@@ -97,25 +95,6 @@
     					
     			});
     			return exists;
-    		}
-    		
-    		function getMonitorableReport(report) 
-    		{
-				var modReport = [];
-				
-				if(report)
-				{
-					angular.forEach(report, function(reportEntry)
-					{
-						modReport.push({
-								selected: false,
-								entry : reportEntry
-							}
-						);
-					});
-				}
-	
-				return modReport;
     		}
     	};
 })();

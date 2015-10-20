@@ -37,7 +37,30 @@
 	    					role : roles[1],
 	    					allocation: 25
     					};
-	    			}
+	    			},
+	    			monitoredReport : function getMonitorableReport(report) 
+	        		{
+	    				var modReport = {
+	    					monitoredItems : []
+	    				};
+	    				
+	    				if(report)
+	    				{
+	    					angular.forEach(report.items, function(item)
+	    					{
+	    						modReport.monitoredItems.push({
+	    								selected: false,
+	    								product: item.product,
+	    		    					version: item.version,
+	    		    					role : item.role,
+	    		    					allocation: item.allocation
+	    							}
+	    						);
+	    					});
+	    				}
+	    	
+	    				return modReport;
+	        		}
 	    		},
 				authenticate: true
 			})

@@ -22,14 +22,14 @@
 	</form>
 	<div style="padding-top:10px;">
 		<ul class="list-group">
-			<li class="list-group-item" ng-repeat="monitor in report | orderBy : '!allocation' ">
-				<span class="badge">{{monitor.entry.allocation}}%</span>
+			<li class="list-group-item" ng-repeat="monitoredItem in report.monitoredItems | orderBy : '!allocation' ">
+				<span class="badge">{{monitoredItem.allocation}}%</span>
 				<div ng-show="isEdit" class="checkbox">
 			    	<label>
-			      		<input type="checkbox" ng-model="monitor.selected"> {{monitor.entry.product}} {{monitor.entry.version}} ({{monitor.entry.role}})
+			      		<input type="checkbox" ng-model="monitoredItem.selected"> {{monitoredItem.product}} {{monitoredItem.version}} ({{monitoredItem.role}})
 			    	</label>
 			  	</div>
-				<span ng-show="!isEdit">{{monitor.entry.product}} {{monitor.entry.version}} ({{monitor.entry.role}})</span>
+				<span ng-show="!isEdit">{{monitoredItem.product}} {{monitoredItem.version}} ({{monitoredItem.role}})</span>
 			</li>
 		</ul>
 	</div>
