@@ -15,7 +15,7 @@
     		$scope.products = products;
     		$scope.roles = roles;
     		$scope.reportForm = reportForm; 
-    		$scope.report = report; 
+    		$scope.report = getMonitorableReport(report); 
     		$scope.toDelete = [];
     		$scope.reportDate = report.$id;
 
@@ -25,13 +25,14 @@
     		$scope.addEntry = addEntry;    		
     		$scope.edit = edit;    		
     		$scope.remove = remove;    		
-    		$scope.selectAll = selectAll;
+    		$scope.toggle = toggle;
     		
     		function onProductChangeEventHandler(prodId) 
     		{
     			var found = false;
     			angular.forEach($scope.products, function(product) {
-    				if(!found && product.$id === prodId) {
+    				if(!found && product.$id === prodId) 
+    				{
     					found = true;
     					$scope.reportForm.product = product;
     		    		$scope.reportForm.version = product.versions[0];
@@ -46,19 +47,27 @@
     		
     		function remove() 
     		{
-    			var report = [];
-    			angular.forEach($scope.latestStatus, function(reportEntry)
+    			var items = [];
+    			angular.forEach($scope.report.items, function(item)
     			{
-    				if(!reportEntry.selected) {
-    					report.push(reportEntry.entry);
+    				if(!item.selected) {
+    					items.push(item);
     				}
     			});
-    			StatusFactory.saveAll($scope.authUser.$id, $scope.latestStatus.$id, report);
+    			
+    			StatusFactory.saveReport($scope.authUser.$id, report.$id, items).then(function(report){
+    				$scope.report = getMonitorableReport(report);
+    			}, function(error) {
+    				$scope.errorMessage = error;
+    			});
+    			$scope.isEdit = false;
     		};
 
-    		function selectAll() 
+    		function toggle(selected) 
     		{
-    			
+    			angular.forEach($scope.report.items, function(item){
+    				item.selected = selected;
+    			});
     		};
 
     		function clearErrorMsg() {
@@ -73,13 +82,16 @@
     		
     		function addEntry() 
     		{
+    			var items = $scope.report.items != null ? $scope.report.items : [];
+    			
     			if(statusAlreadyExists()) 
     			{
     				$scope.errorMessage = "This item alreay exists!";
     			}
     			else
     			{
-	    			StatusFactory.saveReport($scope.authUser.$id, report.$id, reportForm).then(function(report){
+    				items.push(transformReportItem(reportForm));
+	    			StatusFactory.saveReport($scope.authUser.$id, report.$id, items).then(function(report){
 	    				$scope.report = getMonitorableReport(report);
 	    			}, function(error) {
 	    				$scope.errorMessage = error;
@@ -87,13 +99,14 @@
     			}
     		};
     		
-    		function statusAlreadyExists() {
+    		function statusAlreadyExists() 
+    		{
     			var exists = false;
     			angular.forEach(report.items, function(item){
     				if(!exists && 	
-						item.product == reportForm.product &&
-						item.version == reportForm.version &&
-						item.role == reportForm.role)
+						item.product === reportForm.product.name &&
+						item.version === reportForm.version.name &&
+						item.role === reportForm.role.name)
     				{
     					exists = true;
     				}
@@ -114,5 +127,14 @@
 	
 				return report;
     		};
+    		
+    		function transformReportItem(item){
+    			return {
+    				product: item.product.name,
+    				version: item.version.name,
+    				role: item.role.name,
+    				allocation: item.allocation
+    			};
+    		}
     	};
 })();

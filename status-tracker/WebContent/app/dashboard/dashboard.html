@@ -14,7 +14,7 @@
 		</div>
 		<div class="form-group">
 			<label for="allocation" class="control-label">Allocation</label>
-			<input ng-disabled="isEdit" ng-model="reportForm.allocation" type="number" class="form-control input-sm" id="allocation" placeholder="Allocation">
+			<input ng-disabled="isEdit" ng-model="reportForm.allocation" type="number" class="form-control input-sm" style="padding-left:15px;" id="allocation" placeholder="Allocation">
 		</div>
 		<div class="form-group center-block" style="padding-top:2px;text-align:center;">
 			<button ng-disabled="isEdit" type="submit" class="btn btn-primary btn-xs">Add</button>
@@ -22,14 +22,14 @@
 	</form>
 	<div style="padding-top:10px;">
 		<ul class="list-group">
-			<li class="list-group-item" ng-repeat="monitoredItem in report.monitoredItems | orderBy : '!allocation' ">
-				<span class="badge">{{monitoredItem.allocation}}%</span>
+			<li class="list-group-item" ng-repeat="item in report.items | orderBy : '!allocation' ">
+				<span class="badge">{{item.allocation}}%</span>
 				<div ng-show="isEdit" class="checkbox">
 			    	<label>
-			      		<input type="checkbox" ng-model="monitoredItem.selected"> {{monitoredItem.product}} {{monitoredItem.version}} ({{monitoredItem.role}})
+			      		<input type="checkbox" ng-model="item.selected"> {{item.product}} {{item.version}} ({{item.role}})
 			    	</label>
 			  	</div>
-				<span ng-show="!isEdit">{{monitoredItem.product}} {{monitoredItem.version}} ({{monitoredItem.role}})</span>
+				<span ng-show="!isEdit">{{item.product}} {{item.version}} ({{item.role}})</span>
 			</li>
 		</ul>
 	</div>
@@ -50,7 +50,10 @@
 <nav class="navbar navbar-default navbar-fixed-bottom">
 	<table style="width:100%;table-layout:fixed;margin-top:5px;">
 		<td style="width:80px;text-align: left;">
-			<button ng-show="isEdit" type="button" class="btn btn-link pull-left" ng-click="selectAll()">select all</button>
+			<button ng-show="isEdit" type="button" class="btn btn-link" ng-click="toggle(true)">select all</button>
+		<td>
+		<td style="width:80px;text-align: left;">
+			<button ng-show="isEdit" type="button" class="btn btn-link" ng-click="toggle(false)">clear</button>
 		<td>
 		<th style="width:100%;text-align: center;">{{latestStatus.length}}</th>
 		<td style="width:80px;text-align: right;">

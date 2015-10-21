@@ -22,18 +22,7 @@
 	    				return moment().utc().format('MMMYYYY').toUpperCase();
 	    			},
 	    			report : function(authUser, reportId, StatusFactory) {
-	    				var deferred = $q.defer();
-	    				StatusFactory.getReport(authUser.$id, reportId).then(function(report){
-	    					if(report)
-		    				{
-		    					angular.forEach(report.items, function(item)
-		    					{
-		    						item.selected = false;
-		    					});
-		    				}
-	    					deferred.resolve( report );
-	    				});
-	    				return deferred.promise;
+	    				return StatusFactory.getReport(authUser.$id, reportId);
 	    			},
 	    			products : function(ProductFactory) {
 	    				return ProductFactory.all();

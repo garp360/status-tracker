@@ -37,15 +37,11 @@
     			return deferred.promise;
     		}
     		
-    		function saveReport(empId, reportId, item)
+    		function saveReport(empId, reportId, items)
     		{
     			var deferred = $q.defer();
     			$firebaseObject(statusRef.child(empId).child("reports").child(reportId)).$loaded().then(function(report) {
-    				if(!report.items) 
-    				{
-    					report.items = [];
-    				}
-    				report.items.push(transformReportItem(item));
+    				report.items = items;
     				return report.$save();
     			}).then(function() {
     				deferred.resolve(getReport(empId, reportId));
@@ -53,15 +49,6 @@
     			return deferred.promise;
     		}
 
-    		function transformReportItem(item){
-    			return {
-    				product: item.product.name,
-    				version: item.version.name,
-    				role: item.role.name,
-    				allocation: item.allocation
-    			};
-    		}
-    		
     		function createGuid()
 			{
 			    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
