@@ -46,7 +46,9 @@
     					report.items = [];
     				}
     				report.items.push(transformReportItem(item));
-    				deferred.resolve(report.$save());
+    				return report.$save();
+    			}).then(function() {
+    				deferred.resolve(getReport(empId, reportId));
     			});
     			return deferred.promise;
     		}
@@ -57,7 +59,7 @@
     				version: item.version.name,
     				role: item.role.name,
     				allocation: item.allocation
-    			}
+    			};
     		}
     		
     		function createGuid()

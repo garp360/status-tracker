@@ -5,18 +5,17 @@
     	.module('astadia.status.tracker')
     	.controller('DashboardController', DashboardController);
     	
-    	DashboardController.$inject = ['$scope', '$log', '$state', '$controller', 'AuthFactory', 'ProductFactory', 'StatusFactory', 'ROUTES', 'authUser', 'report', 'products', 'roles', 'reportForm', 'monitoredReport'];
+    	DashboardController.$inject = ['$scope', '$log', '$state', '$controller', 'AuthFactory', 'ProductFactory', 'StatusFactory', 'ROUTES', 'authUser', 'report', 'products', 'roles', 'reportForm'];
     	
-    	function DashboardController ($scope, $log, $state, $controller, AuthFactory, ProductFactory, StatusFactory, ROUTES, authUser, report, products, roles, reportForm, monitoredReport) 
+    	function DashboardController ($scope, $log, $state, $controller, AuthFactory, ProductFactory, StatusFactory, ROUTES, authUser, report, products, roles, reportForm) 
     	{
-    		$scope.errorMsg = false;
     		$scope.isEdit = false;
     		$scope.errorMessage = "";
     		$scope.authUser = authUser;
     		$scope.products = products;
     		$scope.roles = roles;
     		$scope.reportForm = reportForm; 
-    		$scope.report = monitoredReport; 
+    		$scope.report = report; 
     		$scope.toDelete = [];
     		$scope.reportDate = report.$id;
 
@@ -63,7 +62,7 @@
     		};
 
     		function clearErrorMsg() {
-    			$scope.errorMsg = false;
+    			$scope.errorMessage = "";
     		};
     		
     		function logout() 
@@ -74,27 +73,46 @@
     		
     		function addEntry() 
     		{
-    			StatusFactory.saveReport($scope.authUser.$id, report.$id, reportForm).then(function(report){
-    				$scope.report = report;
-    			}, function(error) {
-    				$scope.errorMsg = true;
-    				$scope.errorMessage = error;
-    			});
+    			if(statusAlreadyExists()) 
+    			{
+    				$scope.errorMessage = "This item alreay exists!";
+    			}
+    			else
+    			{
+	    			StatusFactory.saveReport($scope.authUser.$id, report.$id, reportForm).then(function(report){
+	    				$scope.report = getMonitorableReport(report);
+	    			}, function(error) {
+	    				$scope.errorMessage = error;
+	    			});
+    			}
     		};
     		
-    		function statusAlreadyExists(report, reportEntry) {
+    		function statusAlreadyExists() {
     			var exists = false;
-    			angular.forEach(report, function(entry){
+    			angular.forEach(report.items, function(item){
     				if(!exists && 	
-    					entry.product == reportEntry.product &&
-    					entry.version == reportEntry.version &&
-    					entry.role == reportEntry.role)
+						item.product == reportForm.product &&
+						item.version == reportForm.version &&
+						item.role == reportForm.role)
     				{
     					exists = true;
     				}
     					
     			});
     			return exists;
-    		}
+    		};
+    		
+    		function getMonitorableReport(report) 
+    		{
+				if(report)
+				{
+					angular.forEach(report.items, function(item)
+					{
+						item.selected = false;
+					});
+				}
+	
+				return report;
+    		};
     	};
 })();

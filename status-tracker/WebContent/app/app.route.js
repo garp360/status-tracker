@@ -22,7 +22,18 @@
 	    				return moment().utc().format('MMMYYYY').toUpperCase();
 	    			},
 	    			report : function(authUser, reportId, StatusFactory) {
-	    				return StatusFactory.getReport(authUser.$id, reportId);
+	    				var deferred = $q.defer();
+	    				StatusFactory.getReport(authUser.$id, reportId).then(function(report){
+	    					if(report)
+		    				{
+		    					angular.forEach(report.items, function(item)
+		    					{
+		    						item.selected = false;
+		    					});
+		    				}
+	    					deferred.resolve( report );
+	    				});
+	    				return deferred.promise;
 	    			},
 	    			products : function(ProductFactory) {
 	    				return ProductFactory.all();
@@ -37,30 +48,7 @@
 	    					role : roles[1],
 	    					allocation: 25
     					};
-	    			},
-	    			monitoredReport : function getMonitorableReport(report) 
-	        		{
-	    				var modReport = {
-	    					monitoredItems : []
-	    				};
-	    				
-	    				if(report)
-	    				{
-	    					angular.forEach(report.items, function(item)
-	    					{
-	    						modReport.monitoredItems.push({
-	    								selected: false,
-	    								product: item.product,
-	    		    					version: item.version,
-	    		    					role : item.role,
-	    		    					allocation: item.allocation
-	    							}
-	    						);
-	    					});
-	    				}
-	    	
-	    				return modReport;
-	        		}
+	    			}
 	    		},
 				authenticate: true
 			})
