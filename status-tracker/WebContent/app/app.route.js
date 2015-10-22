@@ -21,7 +21,7 @@
 	    			reportId : function() {
 	    				return moment().utc().format('MMMYYYY').toUpperCase();
 	    			},
-	    			report : function(authUser, reportId, StatusFactory) {
+	    			_report : function(authUser, reportId, StatusFactory) {
 	    				return StatusFactory.getReport(authUser.$id, reportId);
 	    			},
 	    			products : function(ProductFactory) {

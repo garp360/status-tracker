@@ -5,9 +5,9 @@
     	.module('astadia.status.tracker')
     	.controller('DashboardController', DashboardController);
     	
-    	DashboardController.$inject = ['$scope', '$log', '$state', '$controller', 'AuthFactory', 'ProductFactory', 'StatusFactory', 'ROUTES', 'authUser', 'report', 'products', 'roles', 'reportForm'];
+    	DashboardController.$inject = ['$scope', '$log', '$state', '$controller', 'AuthFactory', 'ProductFactory', 'StatusFactory', 'ROUTES', 'authUser', '_report', 'products', 'roles', 'reportForm'];
     	
-    	function DashboardController ($scope, $log, $state, $controller, AuthFactory, ProductFactory, StatusFactory, ROUTES, authUser, report, products, roles, reportForm) 
+    	function DashboardController ($scope, $log, $state, $controller, AuthFactory, ProductFactory, StatusFactory, ROUTES, authUser, _report, products, roles, reportForm) 
     	{
     		$scope.isEdit = false;
     		$scope.errorMessage = "";
@@ -15,9 +15,9 @@
     		$scope.products = products;
     		$scope.roles = roles;
     		$scope.reportForm = reportForm; 
-    		$scope.report = getMonitorableReport(report); 
+    		$scope.report = getMonitorableReport(_report); 
     		$scope.toDelete = [];
-    		$scope.reportDate = report.$id;
+    		$scope.reportDate = parseDateFromReportId($scope.report.$id);
 
     		$scope.onProductChange = onProductChangeEventHandler;
     		$scope.clearErrorMsg = clearErrorMsg;
@@ -26,6 +26,7 @@
     		$scope.edit = edit;    		
     		$scope.remove = remove;    		
     		$scope.toggle = toggle;
+    		$scope.changeDate = changeDate;
     		
     		function onProductChangeEventHandler(prodId) 
     		{
@@ -55,7 +56,7 @@
     				}
     			});
     			
-    			StatusFactory.saveReport($scope.authUser.$id, report.$id, items).then(function(report){
+    			StatusFactory.saveReport($scope.authUser.$id, $scope.report.$id, items).then(function(report){
     				$scope.report = getMonitorableReport(report);
     			}, function(error) {
     				$scope.errorMessage = error;
@@ -91,7 +92,7 @@
     			else
     			{
     				items.push(transformReportItem(reportForm));
-	    			StatusFactory.saveReport($scope.authUser.$id, report.$id, items).then(function(report){
+	    			StatusFactory.saveReport($scope.authUser.$id, $scope.report.$id, items).then(function(report){
 	    				$scope.report = getMonitorableReport(report);
 	    			}, function(error) {
 	    				$scope.errorMessage = error;
@@ -102,7 +103,7 @@
     		function statusAlreadyExists() 
     		{
     			var exists = false;
-    			angular.forEach(report.items, function(item){
+    			angular.forEach($scope.report.items, function(item){
     				if(!exists && 	
 						item.product === reportForm.product.name &&
 						item.version === reportForm.version.name &&
@@ -135,6 +136,25 @@
     				role: item.role.name,
     				allocation: item.allocation
     			};
+    		}
+    		
+    		function parseDateFromReportId(reportId) {
+    			return moment(reportId, "MMMYYYY").format("MMMM YYYY");
+    		}
+    		
+    		function changeDate(increment) {
+    			var reportId = moment($scope.report.$id, "MMMYYYY").add(1, 'month').format("MMMYYYY").toUpperCase();
+    			
+    			if(increment < 0) {
+    				reportId = moment($scope.report.$id, "MMMYYYY").subtract(1, 'month').format("MMMYYYY").toUpperCase();
+    			}
+    			
+    			StatusFactory.getReport(authUser.$id, reportId).then(function(report){
+    				$scope.reportDate = parseDateFromReportId(report.$id);
+    				$scope.report = getMonitorableReport(report);
+    			}, function(error) {
+    				$scope.errorMessage = error;
+    			});
     		}
     	};
 })();
