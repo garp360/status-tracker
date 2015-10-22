@@ -39,8 +39,15 @@
 	<table style="width:100%;table-layout:fixed;margin-bottom:5px;">
 		<td style="width:80px;text-align: left;"><button type="button" class="btn btn-link pull-left" ng-click="logout()">&lt; logout</button><td>
 		<th style="width:100%;text-align: center;">
-			NAVAIR Status ({{authUser.name.last}})<br />
-			<table style="width:100%;"><tr><td width="50%">&nbsp;</td><td><button type="button" class="btn btn-link no-pad" ng-click="changeDate(-1)"><i class="fa fa-caret-left fa-lg"></i></button></td><th style="white-space: nowrap;padding:0px 5px 0px 5px;">{{reportDate}}</th><td><button type="button" class="btn btn-link no-pad" ng-click="changeDate(1)"><i class="fa fa-caret-right fa-lg"></i></button></td><td width="50%">&nbsp;</td></tr></table></th>
+			<table style="width:100%;">
+				<tr>
+					<td width="50%" rowspan="2">&nbsp;</td><td rowspan="2" style="vertical-align:middle;padding-right:3px;"><button type="button" class="btn btn-link no-pad" ng-click="changeDate(-1)"><i class="fa fa-caret-left fa-2x"></i></button></td><th style="white-space: nowrap;text-align:center;">NAVAIR Status ({{authUser.name.last}})</th><td rowspan="2" style="vertical-align:middle;padding-left:3px;"><button type="button" class="btn btn-link no-pad" ng-click="changeDate(1)"><i class="fa fa-caret-right fa-2x"></i></button></td><td rowspan="2" width="50%">&nbsp;</td>
+				</tr>
+				<tr>
+					<th style="white-space: nowrap;text-align:center;">{{reportDate}}</th>
+				</tr>
+			</table>
+		</th>
 		<td style="width:80px;text-align: right;">
 			<button ng-show="!isEdit" type="button" class="btn btn-link pull-right" ng-click="edit()">edit</button>
 			<button ng-show="isEdit" type="button" class="btn btn-link pull-right" ng-click="edit()">cancel</button>
