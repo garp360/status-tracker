@@ -22,7 +22,7 @@
 	    				return moment().utc().format('MMMYYYY').toUpperCase();
 	    			},
 	    			_report : function(authUser, reportId, StatusFactory) {
-	    				return StatusFactory.getReport(authUser.$id, reportId);
+	    				return StatusFactory.getReport(authUser, reportId);
 	    			},
 	    			products : function(ProductFactory) {
 	    				return ProductFactory.all();
@@ -37,6 +37,9 @@
 	    					role : roles[1],
 	    					allocation: 25
     					};
+	    			},
+	    			missingReports : function(reportId, StatusFactory) {
+	    				return StatusFactory.isReportReady(reportId);
 	    			}
 	    		},
 				authenticate: true

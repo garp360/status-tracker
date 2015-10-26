@@ -22,7 +22,7 @@
 	</form>
 	<div style="padding-top:10px;">
 		<ul class="list-group">
-			<li class="list-group-item" ng-repeat="item in report.items | orderBy : '!allocation' ">
+			<li class="list-group-item" ng-repeat="item in report.items | orderBy : ['!allocation','product']">
 				<span class="badge">{{item.allocation}}%</span>
 				<div ng-show="isEdit" class="checkbox">
 			    	<label>
@@ -65,6 +65,8 @@
 		<th style="width:100%;text-align: center;">{{latestStatus.length}}</th>
 		<td style="width:80px;text-align: right;">
 			<button ng-show="!isEdit" type="button" class="btn btn-link pull-right"><i class="fa fa-plus fa-lg"></i></button>
+			<button ng-show="!isEdit && isAdmin() && isReportOk()" type="button" class="btn btn-link pull-right"><i class="fa fa-thumbs-up fa-lg" style="color:green;"></i></button>
+			<button ng-show="!isEdit && isAdmin() && !isReportOk()" type="button" class="btn btn-link pull-right" title="{{missing()}}"><i class="fa fa-thumbs-down fa-lg" style="color:red;"></i></button>
 			<button ng-show="isEdit" type="button" class="btn btn-link pull-right" ng-click="remove()"><i class="fa fa-trash-o fa-lg"></i></button>
 		</td>
 	</table>

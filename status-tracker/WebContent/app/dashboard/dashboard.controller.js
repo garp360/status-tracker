@@ -5,9 +5,9 @@
     	.module('astadia.status.tracker')
     	.controller('DashboardController', DashboardController);
     	
-    	DashboardController.$inject = ['$scope', '$log', '$state', '$controller', 'AuthFactory', 'ProductFactory', 'StatusFactory', 'ROUTES', 'authUser', '_report', 'products', 'roles', 'reportForm'];
+    	DashboardController.$inject = ['$scope', '$log', '$state', '$controller', 'AuthFactory', 'ProductFactory', 'StatusFactory', 'ROUTES', 'authUser', '_report', 'products', 'roles', 'reportForm', 'missingReports'];
     	
-    	function DashboardController ($scope, $log, $state, $controller, AuthFactory, ProductFactory, StatusFactory, ROUTES, authUser, _report, products, roles, reportForm) 
+    	function DashboardController ($scope, $log, $state, $controller, AuthFactory, ProductFactory, StatusFactory, ROUTES, authUser, _report, products, roles, reportForm, missingReports) 
     	{
     		$scope.isEdit = false;
     		$scope.errorMessage = "";
@@ -18,6 +18,7 @@
     		$scope.report = getMonitorableReport(_report); 
     		$scope.toDelete = [];
     		$scope.reportDate = parseDateFromReportId($scope.report.$id);
+    		$scope.missingReports = missingReports;
 
     		$scope.onProductChange = onProductChangeEventHandler;
     		$scope.clearErrorMsg = clearErrorMsg;
@@ -27,6 +28,9 @@
     		$scope.remove = remove;    		
     		$scope.toggle = toggle;
     		$scope.changeDate = changeDate;
+    		$scope.isAdmin = isAdmin;
+    		$scope.isReportOk = isReportOk;
+    		$scope.missing = missing;
     		
     		function onProductChangeEventHandler(prodId) 
     		{
@@ -56,7 +60,7 @@
     				}
     			});
     			
-    			StatusFactory.saveReport($scope.authUser.$id, $scope.report.$id, items).then(function(report){
+    			StatusFactory.saveReport($scope.authUser, $scope.report.$id, items).then(function(report){
     				$scope.report = getMonitorableReport(report);
     			}, function(error) {
     				$scope.errorMessage = error;
@@ -92,7 +96,7 @@
     			else
     			{
     				items.push(transformReportItem(reportForm));
-	    			StatusFactory.saveReport($scope.authUser.$id, $scope.report.$id, items).then(function(report){
+	    			StatusFactory.saveReport($scope.authUser, $scope.report.$id, items).then(function(report){
 	    				$scope.report = getMonitorableReport(report);
 	    			}, function(error) {
 	    				$scope.errorMessage = error;
@@ -129,32 +133,61 @@
 				return report;
     		};
     		
-    		function transformReportItem(item){
+    		function transformReportItem(item)
+    		{
     			return {
     				product: item.product.name,
     				version: item.version.name,
     				role: item.role.name,
     				allocation: item.allocation
     			};
-    		}
+    		};
     		
-    		function parseDateFromReportId(reportId) {
+    		function parseDateFromReportId(reportId) 
+    		{
     			return moment(reportId, "MMMYYYY").format("MMMM YYYY");
-    		}
+    		};
     		
-    		function changeDate(increment) {
+    		function changeDate(increment) 
+    		{
     			var reportId = moment($scope.report.$id, "MMMYYYY").add(1, 'month').format("MMMYYYY").toUpperCase();
     			
     			if(increment < 0) {
     				reportId = moment($scope.report.$id, "MMMYYYY").subtract(1, 'month').format("MMMYYYY").toUpperCase();
     			}
     			
-    			StatusFactory.getReport(authUser.$id, reportId).then(function(report){
+    			StatusFactory.getReport(authUser, reportId).then(function(report){
     				$scope.reportDate = parseDateFromReportId(report.$id);
     				$scope.report = getMonitorableReport(report);
     			}, function(error) {
     				$scope.errorMessage = error;
     			});
+    		};
+    		
+    		function isAdmin() {
+    			var isAdmin = false;
+    			if(authUser.roles) {
+    				angular.forEach(authUser.roles, function (role){
+    					if(!isAdmin) {
+    						isAdmin = role.$value === "ADMIN";
+    					}
+    				});
+    			}
+    			return isAdmin;
+    		}
+
+    		function isReportOk() {
+    			return $scope.missingReports && $scope.missingReports.length == 0;
+    		}
+    		
+    		function missing() {
+    			var missing = "";
+    			if($scope.missingReports) {
+    				angular.forEach(missingReports, function(employee){
+    					missing = missing.trim().length > 0 ?  missing + ", " + employee.firstName + " " + employee.lastName : "Missing: " + employee.firstName + " " + employee.lastName;
+    				});
+    			}
+    			return missing;
     		}
     	};
 })();
